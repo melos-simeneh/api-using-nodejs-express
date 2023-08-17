@@ -26,6 +26,24 @@ app.post("/api/v1/tours", (req, res) => {
   });
 });
 
+app.get("/api/v1/tours/:id", (req, res) => {
+  const id = req.params.id;
+  const tour = tours.find((t) => t.id === id * 1);
+  if (!tour)
+    return res
+      .status(404)
+      .json({ status: "fail", message: `Tour with id ${id} not found` });
+
+  res.json({
+    status: "success",
+    results: tours.length,
+    data: {
+      tour,
+    },
+  });
+});
+app.patch("/api/v1/tours", (req, res) => {});
+
 const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
