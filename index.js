@@ -16,6 +16,7 @@ const getAllTours = (req, res) => {
     },
   });
 };
+
 const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
@@ -81,6 +82,7 @@ const deleteTour = (req, res) => {
     });
   });
 };
+
 app.route("/api/v1/tours").get(getAllTours).post(createTour);
 
 app
