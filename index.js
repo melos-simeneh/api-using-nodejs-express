@@ -42,7 +42,25 @@ app.get("/api/v1/tours/:id", (req, res) => {
     },
   });
 });
-app.patch("/api/v1/tours", (req, res) => {});
+app.patch("/api/v1/tours/:id", (req, res) => {
+  const id = req.params.id;
+  const tour = tours.find((t) => t.id === id * 1);
+  if (!tour)
+    return res
+      .status(404)
+      .json({ status: "fail", message: `Tour with id ${id} not found` });
+  const { duration, name, difficulty } = req.body;
+  tour.name = name;
+  tour.duration = duration;
+  tour.difficulty = difficulty;
+  res.json({
+    status: "success",
+    results: tours.length,
+    data: {
+      tour,
+    },
+  });
+});
 
 const PORT = 8000;
 app.listen(PORT, () => {
