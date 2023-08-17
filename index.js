@@ -22,7 +22,9 @@ app.post("/api/v1/tours", (req, res) => {
   const newTour = Object.assign({ id: newId }, req.body);
   tours.push(newTour);
   fs.writeFile(`${__dirname}/data.json`, JSON.stringify(tours), (err) => {
-    res.status(201).json({ status: "success", data: { newTour } });
+    res
+      .status(201)
+      .json({ status: "success", message: "Tour created", data: { newTour } });
   });
 });
 
@@ -42,6 +44,7 @@ app.get("/api/v1/tours/:id", (req, res) => {
     },
   });
 });
+
 app.patch("/api/v1/tours/:id", (req, res) => {
   const id = req.params.id;
   const tour = tours.find((t) => t.id === id * 1);
@@ -55,10 +58,28 @@ app.patch("/api/v1/tours/:id", (req, res) => {
   tour.difficulty = difficulty;
   res.json({
     status: "success",
+    message: "Tour updated",
     results: tours.length,
     data: {
       tour,
     },
+  });
+});
+
+app.delete("/api/v1/tours/:id", (req, res) => {
+  const id = req.params.id;
+  const tour = tours.find((t) => t.id === id * 1);
+  if (!tour)
+    return res
+      .status(404)
+      .json({ status: "fail", message: `Tour with id ${id} not found` });
+
+  const otherTours = tours.filter((t) => t.id !== id * 1);
+  fs.writeFile(`${__dirname}/data.json`, JSON.stringify(otherTours), (err) => {
+    res.json({
+      status: "success",
+      message: "Tour deleted successfully",
+    });
   });
 });
 
