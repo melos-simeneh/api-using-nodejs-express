@@ -2,6 +2,17 @@ const fs = require("fs");
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../data/data.json`, "utf-8")
 );
+
+exports.checkID = (req, res, next, val) => {
+  const tour = tours.find((t) => t.id === val * 1);
+  if (!tour)
+    return res
+      .status(404)
+      .json({ status: "fail", message: `Tour with id ${val} not found` });
+  console.log("ID is " + val);
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   res.json({
     status: "success",
@@ -26,11 +37,6 @@ exports.createTour = (req, res) => {
 exports.getTour = (req, res) => {
   const id = req.params.id;
   const tour = tours.find((t) => t.id === id * 1);
-  if (!tour)
-    return res
-      .status(404)
-      .json({ status: "fail", message: `Tour with id ${id} not found` });
-
   res.json({
     status: "success",
     results: tours.length,
@@ -43,10 +49,6 @@ exports.getTour = (req, res) => {
 exports.updateTour = (req, res) => {
   const id = req.params.id;
   const tour = tours.find((t) => t.id === id * 1);
-  if (!tour)
-    return res
-      .status(404)
-      .json({ status: "fail", message: `Tour with id ${id} not found` });
   const { duration, name, difficulty } = req.body;
   tour.name = name;
   tour.duration = duration;
@@ -63,12 +65,6 @@ exports.updateTour = (req, res) => {
 
 exports.deleteTour = (req, res) => {
   const id = req.params.id;
-  const tour = tours.find((t) => t.id === id * 1);
-  if (!tour)
-    return res
-      .status(404)
-      .json({ status: "fail", message: `Tour with id ${id} not found` });
-
   const otherTours = tours.filter((t) => t.id !== id * 1);
   fs.writeFile(`${__dirname}/data.json`, JSON.stringify(otherTours), (err) => {
     res.json({
