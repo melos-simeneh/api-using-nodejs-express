@@ -1,6 +1,5 @@
 const fs = require("fs");
 const express = require("express");
-
 const app = express();
 
 app.use(express.json());
@@ -83,13 +82,12 @@ const deleteTour = (req, res) => {
   });
 };
 
-app.route("/api/v1/tours").get(getAllTours).post(createTour);
+const tourRouter = express.Router();
+tourRouter.route("/").get(getAllTours).post(createTour);
 
-app
-  .route("/api/v1/tours/:id")
-  .get(getTour)
-  .patch(updateTour)
-  .delete(deleteTour);
+tourRouter.route("/:id").get(getTour).patch(updateTour).delete(deleteTour);
+
+app.use("/api/v1/tours", tourRouter);
 
 const PORT = 8000;
 app.listen(PORT, () => {
