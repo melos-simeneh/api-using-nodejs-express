@@ -1,1 +1,1 @@
-# API using Node.js, Express and JSON
+# API using Node.js and Express
