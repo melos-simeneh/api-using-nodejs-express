@@ -2,9 +2,9 @@
   "name": "api-using-nodejs-express",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start":"nodemon index.js"
+    "start":"nodemon server.js"
   },
   "author": "Melos Simeneh",
   "license": "ISC",
