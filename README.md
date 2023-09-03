@@ -5,4 +5,5 @@
  2. run `npm install` 
  ### To run the API
  1. open terminal
- 2. run `npm start` this will start the app in development mode
+ 2. run `npm start` this will start the app in development mode on http://localhost:8000
+    
